@@ -1,0 +1,39 @@
+server:
+  port: ${PORT:8086}
+  
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+       discovery:
+        locator:
+          enabled: true
+       routes:
+        - id: product-service-get
+          uri: lb://product-microservice/
+          predicates:
+          - Method=GET
+          - Path=/ecom/product-service/**         
+        - id: product-service-post
+          uri: lb://product-microservice/
+          predicates:
+          - Method=POST
+          - Path=/ecom/product-service/**         
+        - id: product-service-put
+          uri: lb://product-microservice/
+          predicates:
+          - Method=PUT
+          - Path=/ecom/product-service/**         
+        - id: product-service-delete
+          uri: lb://product-microservice/
+          predicates:
+          - Method=DELETE
+          - Path=/ecom/product-service/**          
+          
+eureka:
+  instance:
+    hostname: localhost
+  client:   
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/          
